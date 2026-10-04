@@ -46,10 +46,15 @@ CLASSIFY_TOOL = {
         "properties": {
             "doc_type": {"type": "string",
                          "description": "One of the supported types, or 'other'."},
-            "vendor": {"type": "string", "description": "Name of the vendor or counterparty."},
+            "described_as": {"type": "string",
+                             "description": "What the document is, in a few plain words, "
+                                            "for example 'independent contractor agreement'."},
+            "vendor": {"type": "string",
+                       "description": "The company that issued the agreement, not the person or "
+                                      "company being asked to sign it."},
             "summary": {"type": "string", "description": "One sentence on what the contract covers."},
         },
-        "required": ["doc_type", "vendor", "summary"],
+        "required": ["doc_type", "described_as", "vendor", "summary"],
     },
 }
 

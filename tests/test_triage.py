@@ -301,3 +301,25 @@ def test_mostly_scanned_pdf_fails_before_any_model_call(tmp_path):
     with pytest.raises(ValueError, match="scanned"):
         triage(str(path), LLM(client))
     assert client.calls == []
+
+
+# ----------------------------------------------------------------- report
+
+def test_unsupported_memo_says_what_it_is_and_what_to_do():
+    client = FakeClient({}, doc_type="other")
+    result = triage(SAMPLE_PATH, LLM(client))
+    result.classification["described_as"] = "independent contractor agreement"
+    text = memo(result)
+    assert "Detected: independent contractor agreement" in text
+    assert "SaaS terms or master service agreement" in text and "## Next step" in text
+    assert "rework" not in text
+
+
+def test_unsupported_memo_without_a_label_still_renders():
+    result = triage(SAMPLE_PATH, LLM(FakeClient({}, doc_type="other")))
+    assert "Detected: document of a type this tool does not review" in memo(result)
+
+
+def test_pdf_reader_warnings_are_silenced():
+    import logging
+    assert logging.getLogger("pypdf").getEffectiveLevel() >= logging.ERROR

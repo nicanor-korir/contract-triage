@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import io
+import logging
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -10,6 +11,10 @@ from urllib.parse import urljoin
 import httpx
 from bs4 import BeautifulSoup
 from pypdf import PdfReader
+
+# pypdf warns about every malformed object it skips ("Ignoring wrong pointing object").
+# The text still comes out, and check_readable() catches the cases where it does not.
+logging.getLogger("pypdf").setLevel(logging.ERROR)
 
 CHUNK_CHARS = 3000
 URL_RE = re.compile(r"https?://[^\s)>\]\"'<]+")
