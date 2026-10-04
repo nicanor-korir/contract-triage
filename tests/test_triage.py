@@ -247,3 +247,28 @@ def test_forced_tool_does_not_force_tool_choice_and_asks_again():
     result = forced_tool(LLM(client), tool=agent.CLASSIFY_TOOL, system="s", user="u")
     assert result == {"doc_type": "saas_terms"} and len(client.calls) == 2
     assert all(c["tool_choice"]["type"] == "auto" for c in client.calls)
+
+
+def test_finding_the_second_reader_skips_is_not_verified():
+    class SkipsSla(FakeClient):
+        def create(self, **kwargs):
+            response = super().create(**kwargs)
+            for block in response.content:
+                if block.name == "judge":
+                    block.input["verdicts"] = [v for v in block.input["verdicts"]
+                                               if v["check_id"] != "sla"]
+            return response
+
+    f = {"sla": finding("sla", "concern", "makes no commitment regarding availability",
+                        verification="verified")}
+    verify.judge_support(LLM(SkipsSla({})), CHECKLIST, f)
+    assert f["sla"].verification == "unsupported"
+
+
+def test_second_reader_is_told_the_acceptable_jurisdictions():
+    client = FakeClient({})
+    f = {"governing_law": finding(
+        "governing_law", "ok", "governed by the laws of Ireland, and the courts of Dublin",
+        verification="verified")}
+    verify.judge_support(LLM(client), CHECKLIST, f)
+    assert "Ireland" in client.calls[0]["messages"][0]["content"].split("check_id:")[0]
