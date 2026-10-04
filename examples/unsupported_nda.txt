@@ -1,0 +1,19 @@
+MUTUAL NON-DISCLOSURE AGREEMENT
+
+This is a fictional agreement written for testing the contract triage agent. It is not based on any real company's terms.
+
+This Mutual Non-Disclosure Agreement is made between Orbitline Labs Ltd and the company named in the signature block below (each a "Party").
+
+1. Purpose. The Parties wish to discuss a possible joint venture (the "Purpose") and may disclose confidential information to each other for that Purpose.
+
+2. Confidential Information. "Confidential Information" means any non-public business, technical or financial information disclosed by one Party to the other, in any form, that is marked confidential or would reasonably be understood to be confidential.
+
+3. Obligations. The receiving Party will use the Confidential Information only for the Purpose, will not disclose it to any third party except its employees and advisers who need to know it, and will protect it with at least reasonable care.
+
+4. Exclusions. These obligations do not apply to information that is public through no fault of the receiving Party, was already known to it, is independently developed, or must be disclosed by law.
+
+5. Term. This Agreement lasts for two years from the date of signature, and the obligations in section 3 survive for three years after it ends.
+
+6. Return. On request, the receiving Party will return or destroy the Confidential Information.
+
+7. Governing law. This Agreement is governed by the laws of England and Wales.
