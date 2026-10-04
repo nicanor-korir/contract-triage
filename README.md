@@ -7,7 +7,7 @@ It is built for a technical founder with no legal team, and it is triage, not le
 
     pip install -r requirements.txt
     export ANTHROPIC_API_KEY=...            # see .env.example for the optional settings
-    python -m pytest tests -q               # 32 tests, no API key needed
+    python -m pytest tests -q               # 41 tests, no API key needed
     python -m triage examples/sample_terms.txt
     python -m triage https://vendor.example/terms
     python -m triage path/to/contract.pdf
@@ -31,7 +31,7 @@ The checklists in `triage/checklists/` are the product. Edit them until they mat
 
 ## What has and has not been tested
 
-The 32 tests cover ingestion, quote verification, the absence check, the verdict rules, the fetch allow list and the full pipeline including rework.
+The 41 tests cover ingestion, quote verification, the absence check, the verdict rules, the fetch allow list and the full pipeline including rework.
 They use a scripted stand in for the model (`tests/fake.py`), so the plumbing is proven and the model's judgement is not.
 The first live run is where the prompts and checklist wording will need tuning, and `eval/LABELING.md` explains how to measure that.
 
@@ -43,7 +43,7 @@ See `eval/LABELING.md` for how to build and label the test set.
 
 ## Limits in this version
 
-- English contracts only, and two types: SaaS terms or MSAs, and DPAs.
+- English contracts only, and three types: SaaS terms or MSAs and DPAs (read from the customer's side), and independent contractor agreements (read from the contractor's side).
 - Scanned PDFs need OCR first.
 - Contracts over about 400,000 characters are truncated (`TRIAGE_MAX_DOC_CHARS`).
 - One rework round. Anything still unverified pushes the verdict towards "lawyer".

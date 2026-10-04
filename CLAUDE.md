@@ -19,7 +19,7 @@ one rework round -> rule-based verdict -> Markdown memo.
 | `report.py` | Markdown memo |
 | `llm.py` | Anthropic client wrapper, token/cost accounting, `forced_tool()`, `blocks_to_dicts()` |
 | `config.py` | All settings, from environment variables |
-| `checklists/*.yaml` | The product: one checklist per supported `doc_type` |
+| `checklists/*.yaml` | The product: one checklist per supported `doc_type`; `review_for` names whose side it reads from (default the customer) |
 | `__main__.py` | CLI; writes memo + JSON to `runs/` and appends `runs/log.jsonl` |
 | `evalrun.py` | Runs `eval/manifest.csv` and writes `eval/scoreboard.md` |
 
@@ -57,4 +57,4 @@ client. They prove the plumbing, not the model's judgement.
 
 Optional settings (see `.env.example` and `config.py`): `TRIAGE_VERIFIER_MODEL`,
 `TRIAGE_PRICE_INPUT_PER_MTOK`, `TRIAGE_PRICE_OUTPUT_PER_MTOK`, `TRIAGE_MAX_STEPS`,
-`TRIAGE_MAX_FETCHES`, `TRIAGE_MAX_DOC_CHARS`, `TRIAGE_MIN_DOC_CHARS`.
+`TRIAGE_MAX_FETCHES`, `TRIAGE_MAX_DOC_CHARS`, `TRIAGE_MIN_DOC_CHARS`, `TRIAGE_EFFORT`.
