@@ -10,6 +10,9 @@ def _float(name: str):
 # Model names change, so they live in the environment and not in the code.
 MODEL = os.getenv("TRIAGE_MODEL", "claude-sonnet-5-5")
 VERIFIER_MODEL = os.getenv("TRIAGE_VERIFIER_MODEL", MODEL)
+# low | medium | high | xhigh | max. Lower effort means less thinking, so fewer output tokens.
+# Unset sends nothing, which suits Haiku 4.5 (it rejects effort) and keeps the model default.
+EFFORT = os.getenv("TRIAGE_EFFORT") or None
 
 # Prices in USD per million tokens. Leave unset and the report shows tokens only.
 # Take the numbers from the provider's current pricing page.

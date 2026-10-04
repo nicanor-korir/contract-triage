@@ -339,3 +339,23 @@ def test_competent_court_is_not_an_exclusivity_keyword():
     doc = Document("t", [Page(1, "The courts of competent jurisdiction decide any dispute.")])
     f = {"exclusivity": finding("exclusivity", "missing")}
     assert verify.probe_absence({"items": [item]}, f, doc) == {}
+
+
+# ------------------------------------------------------------------- cost
+
+def test_agent_loop_caches_the_whole_conversation():
+    client = FakeClient(copy.deepcopy(SAMPLE))
+    triage(SAMPLE_PATH, LLM(client))
+    loop_calls = [c for c in client.calls if len(c["tools"]) > 1]
+    assert loop_calls and all(c["cache_control"] == {"type": "ephemeral"} for c in loop_calls)
+
+
+def test_effort_is_sent_only_when_configured(monkeypatch):
+    from triage import config
+    client = FakeClient({}, doc_type="other")
+    triage(SAMPLE_PATH, LLM(client))
+    assert "output_config" not in client.calls[0]
+    monkeypatch.setattr(config, "EFFORT", "medium")
+    client = FakeClient({}, doc_type="other")
+    triage(SAMPLE_PATH, LLM(client))
+    assert client.calls[0]["output_config"] == {"effort": "medium"}

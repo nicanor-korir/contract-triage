@@ -47,6 +47,8 @@ class LLM:
 
     # Thinking tokens count against max_tokens, so leave room for a turn of many tool calls.
     def create(self, *, model: str | None = None, max_tokens: int = 16000, **kwargs):
+        if config.EFFORT:
+            kwargs.setdefault("output_config", {"effort": config.EFFORT})
         response = self.client.messages.create(
             model=model or config.MODEL, max_tokens=max_tokens, **kwargs)
         self.usage.add(response.usage)

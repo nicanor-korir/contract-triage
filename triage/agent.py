@@ -194,7 +194,10 @@ def run_checks(llm: LLM, doc: Document, checklist: dict, *,
 
     steps = 0
     for steps in range(1, config.MAX_STEPS + 1):
-        response = llm.create(system=SYSTEM, tools=TOOLS, messages=messages)
+        # Top-level cache_control caches the whole conversation so far, so each turn reads the
+        # earlier turns and any fetched documents from cache instead of paying for them again.
+        response = llm.create(system=SYSTEM, tools=TOOLS, messages=messages,
+                              cache_control={"type": "ephemeral"})
         content = blocks_to_dicts(response.content)
         tool_uses = [b for b in content if b["type"] == "tool_use"]
         remaining = sorted(valid_ids - findings.keys())
