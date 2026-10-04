@@ -6,3 +6,4 @@ runs/*
 eval/contracts/*
 !eval/contracts/.gitkeep
 eval/results/
+.venv/
