@@ -71,6 +71,7 @@ def triage(source: str, llm: LLM | None = None) -> Result:
         "documents_fetched": [d.source for d in extra.values()],
         "items": len(checklist["items"]) if checklist else 0,
         "first_pass_failures": len(first_pass_failed),
+        "first_pass_reasons": first_pass_failed,
         "unverified_after_rework": sum(
             1 for i in (checklist["items"] if checklist else [])
             if i["id"] not in findings or findings[i["id"]].verification != "verified"),
