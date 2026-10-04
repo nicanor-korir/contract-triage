@@ -381,3 +381,20 @@ def test_contractor_checklist_is_read_from_the_contractors_side():
     assert "Review for: the contractor" in text
     saas = agent.available_checklists()["saas_terms"]
     assert "Review for: the customer" in agent._checklist_text(saas, saas["items"])
+
+
+def test_terminal_output_is_coloured_and_piped_output_is_the_plain_memo():
+    import io
+    from rich.console import Console
+    from triage.report import show
+    result = triage(SAMPLE_PATH, LLM(FakeClient(copy.deepcopy(SAMPLE))))
+
+    terminal = Console(file=io.StringIO(), force_terminal=True, width=100, record=True)
+    show(result, terminal)
+    out = terminal.export_text()
+    assert "Verdict: NEGOTIATE" in out and "Vendor liability cap" in out
+    assert "\x1b[" in terminal.file.getvalue()          # ANSI colour codes
+
+    piped = Console(file=io.StringIO(), force_terminal=False)
+    show(result, piped)
+    assert piped.file.getvalue() == memo(result) + "\n"

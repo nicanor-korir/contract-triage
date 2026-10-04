@@ -8,7 +8,7 @@ import time
 from pathlib import Path
 
 from .pipeline import triage
-from .report import memo
+from .report import memo, show
 
 
 def main() -> None:
@@ -19,7 +19,7 @@ def main() -> None:
 
     result = triage(args.source)
     text = memo(result)
-    print(text)
+    show(result)
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)

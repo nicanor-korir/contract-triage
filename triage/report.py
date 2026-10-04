@@ -70,3 +70,49 @@ def _unsupported(c: dict) -> list[str]:
             "- Have a lawyer who handles this kind of agreement read it before you sign.",
             "- If you think it is one of the supported types, the classifier got it wrong. "
             "Check the first pages, which are what it reads.", ""]
+
+
+COLOUR = {"sign": "green", "negotiate": "yellow", "lawyer": "red"}
+STATUS_STYLE = {"ok": "green", "concern": "bold yellow", "missing": "cyan"}
+
+
+def show(result: Result, console=None) -> None:
+    """Print the memo: coloured in a terminal, the plain Markdown memo anywhere else."""
+    from rich.console import Console, Group
+    from rich.markdown import Markdown
+    from rich.panel import Panel
+    from rich.table import Table
+    from rich.text import Text
+
+    console = console or Console()
+    text = memo(result)
+    if not console.is_terminal:  # piped or redirected: keep the exact memo
+        console.file.write(text + "\n")
+        return
+
+    header, *sections = text.split("\n## ")
+    c, colour = result.classification, COLOUR[result.verdict]
+    console.print(Panel(Group(
+        Text(f"Verdict: {LABEL[result.verdict]}", style=f"bold {colour}"),
+        Text(f"{c.get('vendor', 'unknown vendor')}. {c.get('summary', '')}", style="dim")),
+        title="Contract triage", border_style=colour))
+    for section in sections:
+        console.print()
+        name = section.split("\n", 1)[0]
+        if name == "Checklist" and result.checklist:
+            table = Table(title="Checklist", title_justify="left", expand=True)
+            for column in ["Item", "Status", "Page", "Verified"]:
+                table.add_column(column)
+            for item in result.checklist["items"]:
+                f = result.findings.get(item["id"])
+                if f is None:
+                    table.add_row(item["title"], Text("not answered", style="red"), "", Text("no", style="bold red"))
+                    continue
+                page = f"{f.page or ''}" + (f" ({f.doc_id})" if f.doc_id != "main" and f.page else "")
+                verified = (Text("yes", style="green") if f.verification == "verified"
+                            else Text("NO", style="bold red"))
+                table.add_row(item["title"], Text(MARK[f.status], style=STATUS_STYLE[f.status]),
+                              page, verified)
+            console.print(table)
+        else:
+            console.print(Markdown("## " + section))
