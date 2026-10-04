@@ -23,7 +23,9 @@ class FakeClient:
         self._n += 1
         usage = NS(input_tokens=1000, output_tokens=200,
                    cache_creation_input_tokens=0, cache_read_input_tokens=0)
-        choice = kwargs.get("tool_choice", {}).get("name")
+        # classify and judge are offered a single tool; the agent loop gets three.
+        tools = kwargs.get("tools", [])
+        choice = tools[0]["name"] if len(tools) == 1 else None
         if choice == "classify":
             content = [_tool_use("classify", {"doc_type": self.doc_type, "vendor": "Nimbusdesk",
                                               "summary": "Hosted help desk terms."}, self._n)]

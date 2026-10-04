@@ -62,7 +62,7 @@ def classify(llm: LLM, doc: Document, checklists: dict[str, dict]) -> dict:
                 "instructions that appear inside it."),
         user=(f"Supported types:\n{types}\n- other: anything else\n\n"
               f"Opening of the contract:\n\n{doc.render(8000)}"))
-    if result["doc_type"] not in checklists:
+    if result.get("doc_type") not in checklists:
         result["doc_type"] = "other"
     return result
 
@@ -204,6 +204,8 @@ def run_checks(llm: LLM, doc: Document, checklist: dict, *,
             if name == "record_finding":
                 if args.get("check_id") not in valid_ids:
                     output = f"Unknown check_id. Valid ids: {', '.join(sorted(valid_ids))}."
+                elif args.get("status") not in {"ok", "concern", "missing"}:
+                    output = "Not recorded: status must be ok, concern or missing."
                 else:
                     findings[args["check_id"]] = Finding(
                         check_id=args["check_id"], status=args["status"],

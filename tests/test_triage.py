@@ -202,3 +202,48 @@ def test_fetch_of_a_listed_url_is_attempted(monkeypatch):
     extra = {}
     out = agent._fetch("https://nimbusdesk.example/legal/dpa", doc, extra)
     assert "doc_id 'ref1'" in out and "ref1" in extra
+
+
+# -------------------------------------------------------------- llm / loop
+
+def test_thinking_blocks_are_kept_for_the_next_turn():
+    from types import SimpleNamespace as NS
+    from triage.llm import blocks_to_dicts
+    content = [NS(type="thinking", thinking="", signature="sig"),
+               NS(type="redacted_thinking", data="opaque"),
+               NS(type="tool_use", id="tu_1", name="finish", input={})]
+    assert [b["type"] for b in blocks_to_dicts(content)] == ["thinking", "redacted_thinking", "tool_use"]
+    assert blocks_to_dicts(content)[0]["signature"] == "sig"
+
+
+def test_finding_without_a_valid_status_is_refused_not_a_crash():
+    answers = copy.deepcopy(SAMPLE)
+    answers["sla"] = [{"quote": "makes no commitment regarding availability", "page": 2,
+                       "doc_id": "main", "explanation": "No status given."}]
+    result = triage(SAMPLE_PATH, LLM(FakeClient(answers)))
+    assert "sla" not in result.findings
+    assert result.verdict != "sign"
+
+
+def test_forced_tool_does_not_force_tool_choice_and_asks_again():
+    # Sonnet 5.5 rejects tool_choice "tool" or "any" with a 400.
+    from types import SimpleNamespace as NS
+    from triage.llm import forced_tool
+
+    class TextFirst:
+        def __init__(self):
+            self.calls, self.messages = [], self
+
+        def create(self, **kwargs):
+            self.calls.append(kwargs)
+            usage = NS(input_tokens=1, output_tokens=1,
+                       cache_creation_input_tokens=0, cache_read_input_tokens=0)
+            if len(self.calls) == 1:
+                return NS(content=[NS(type="text", text="It is SaaS terms.")], usage=usage)
+            return NS(content=[NS(type="tool_use", id="t", name="classify",
+                                  input={"doc_type": "saas_terms"})], usage=usage)
+
+    client = TextFirst()
+    result = forced_tool(LLM(client), tool=agent.CLASSIFY_TOOL, system="s", user="u")
+    assert result == {"doc_type": "saas_terms"} and len(client.calls) == 2
+    assert all(c["tool_choice"]["type"] == "auto" for c in client.calls)

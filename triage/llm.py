@@ -45,7 +45,8 @@ class LLM:
         self.client = client
         self.usage = Usage()
 
-    def create(self, *, model: str | None = None, max_tokens: int = 4096, **kwargs):
+    # Thinking tokens count against max_tokens, so leave room for a turn of many tool calls.
+    def create(self, *, model: str | None = None, max_tokens: int = 16000, **kwargs):
         response = self.client.messages.create(
             model=model or config.MODEL, max_tokens=max_tokens, **kwargs)
         self.usage.add(response.usage)
@@ -56,7 +57,13 @@ def blocks_to_dicts(content) -> list[dict]:
     """Convert response blocks to plain dicts so they can be sent back as history."""
     out = []
     for block in content:
-        if block.type == "text" and block.text.strip():
+        # Models with thinking on (Sonnet 5 and 5.5 think by default) must get their
+        # thinking blocks back unchanged alongside the tool_use blocks, or the next call fails.
+        if block.type == "thinking":
+            out.append({"type": "thinking", "thinking": block.thinking, "signature": block.signature})
+        elif block.type == "redacted_thinking":
+            out.append({"type": "redacted_thinking", "data": block.data})
+        elif block.type == "text" and block.text.strip():
             out.append({"type": "text", "text": block.text})
         elif block.type == "tool_use":
             out.append({"type": "tool_use", "id": block.id, "name": block.name, "input": block.input})
@@ -64,12 +71,20 @@ def blocks_to_dicts(content) -> list[dict]:
 
 
 def forced_tool(llm: LLM, *, tool: dict, system: str, user: str, model: str | None = None) -> dict:
-    """One call that must answer through the given tool. Returns the tool input."""
-    response = llm.create(
-        model=model, system=system, tools=[tool],
-        tool_choice={"type": "tool", "name": tool["name"]},
-        messages=[{"role": "user", "content": user}])
-    for block in response.content:
-        if block.type == "tool_use":
-            return block.input
-    raise RuntimeError(f"Model did not call {tool['name']}")
+    """A call that must answer through the given tool. Returns the tool input.
+
+    Newer models (Sonnet 5.5, Opus 5.5, Fable 5.1) reject a forced tool_choice, so the tool
+    is named in the prompt instead, and the model is asked once more if it does not call it.
+    """
+    name = tool["name"]
+    messages = [{"role": "user", "content": f"{user}\n\nAnswer by calling the {name} tool."}]
+    for _ in range(2):
+        response = llm.create(model=model, system=system, tools=[tool],
+                              tool_choice={"type": "auto"}, messages=messages)
+        for block in response.content:
+            if block.type == "tool_use" and block.name == name:
+                return block.input
+        messages += [{"role": "assistant",
+                      "content": blocks_to_dicts(response.content) or [{"type": "text", "text": "."}]},
+                     {"role": "user", "content": f"Call the {name} tool now."}]
+    raise RuntimeError(f"Model did not call {name}")
