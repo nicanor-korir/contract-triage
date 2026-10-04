@@ -108,7 +108,7 @@ items:
   - id: price_changes
     title: Price changes
     question: Can the vendor raise prices during the term or at renewal without the customer's consent?
-    ok_when: Prices are fixed during the term and can rise only at renewal with at least 30 days of notice.
+    ok_when: The vendor can raise prices only at renewal, with at least 30 days of notice.
     concern_when: The vendor can change prices at any time, or renewal increases are uncapped and without notice.
     if_concern: negotiate
     if_missing: ok
