@@ -28,7 +28,7 @@ items:
   - id: customer_indemnity
     title: Customer indemnity
     question: Does the customer indemnify the vendor, and is that obligation limited?
-    ok_when: There is no customer indemnity, or it is limited to the customer's own content or breach.
+    ok_when: The customer indemnity is limited to the customer's own content or breach. If the contract has no customer indemnity at all, record missing.
     concern_when: The customer indemnity is broad or uncapped, for example covering any use of the service or any third party claim.
     if_concern: lawyer
     if_missing: ok
@@ -148,7 +148,7 @@ items:
   - id: exclusivity
     title: Exclusivity and commitments
     question: Is the customer bound by exclusivity, a non-compete, a non-solicit or a minimum purchase commitment?
-    ok_when: None of these apply to the customer.
+    ok_when: A clause expressly says the customer is free of these commitments. If the contract simply contains none of them, record missing.
     concern_when: Any of these apply to the customer.
     if_concern: lawyer
     if_missing: ok

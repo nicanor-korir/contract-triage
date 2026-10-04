@@ -119,7 +119,10 @@ Rules:
 - status ok: a clause exists and matches ok_when.
 - status concern: a clause exists and matches concern_when, or is otherwise unfavourable \
 to the customer.
-- status missing: the contract does not address the item at all.
+- status missing: the contract does not address the item at all. When an item asks about a \
+restriction or obligation and the contract contains none, that is missing, not ok.
+- Never support a finding with a clause about a different topic. If no clause addresses \
+the item, record missing.
 - For ok and concern, quote the deciding clause word for word as one contiguous passage \
 of at most 60 words, with no ellipsis and no paraphrase, and give its [PAGE n] number. \
 Every quote is checked against the source by a program, and a quote that is not found is rejected.
