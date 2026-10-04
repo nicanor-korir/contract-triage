@@ -272,3 +272,32 @@ def test_second_reader_is_told_the_acceptable_jurisdictions():
         verification="verified")}
     verify.judge_support(LLM(client), CHECKLIST, f)
     assert "Ireland" in client.calls[0]["messages"][0]["content"].split("check_id:")[0]
+
+
+# ------------------------------------------------------------ readability
+
+def test_nearly_empty_page_fails_before_any_model_call(tmp_path):
+    path = tmp_path / "terms.html"
+    path.write_text("<html><body><div id='root'></div><p>Please enable JavaScript.</p>"
+                    "<script>render()</script></body></html>")
+    client = FakeClient(copy.deepcopy(SAMPLE))
+    with pytest.raises(ValueError, match="too little"):
+        triage(str(path), LLM(client))
+    assert client.calls == []
+
+
+def test_mostly_scanned_pdf_fails_before_any_model_call(tmp_path):
+    from reportlab.pdfgen import canvas
+    path = tmp_path / "scan.pdf"
+    pdf = canvas.Canvas(str(path))
+    for i, line in enumerate(open(SAMPLE_PATH).read().split("\n")[:60]):
+        pdf.drawString(20, 800 - 12 * i, line[:110])
+    pdf.showPage()
+    for _ in range(3):        # image-only pages: nothing to extract
+        pdf.rect(50, 50, 400, 600, fill=1)
+        pdf.showPage()
+    pdf.save()
+    client = FakeClient(copy.deepcopy(SAMPLE))
+    with pytest.raises(ValueError, match="scanned"):
+        triage(str(path), LLM(client))
+    assert client.calls == []

@@ -4,8 +4,8 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 
-from . import agent, decide as rules, verify
-from .ingest import Document, load
+from . import agent, config, decide as rules, verify
+from .ingest import Document, check_readable, load
 from .llm import LLM
 
 
@@ -41,6 +41,7 @@ def triage(source: str, llm: LLM | None = None) -> Result:
     started = time.time()
     llm = llm or LLM()
     doc = load(source)
+    check_readable(doc, config.MIN_DOC_CHARS)   # before any model call
     checklists = agent.available_checklists()
     classification = agent.classify(llm, doc, checklists)
     checklist = checklists.get(classification["doc_type"])
@@ -67,6 +68,7 @@ def triage(source: str, llm: LLM | None = None) -> Result:
     stats = {
         "seconds": round(time.time() - started, 1),
         "pages": len(doc.pages),
+        "blank_pages": doc.blank_pages,
         "agent_steps": steps,
         "documents_fetched": [d.source for d in extra.values()],
         "items": len(checklist["items"]) if checklist else 0,

@@ -30,6 +30,7 @@ class Document:
     source: str
     pages: list[Page]
     links: set[str] = field(default_factory=set)
+    blank_pages: int = 0   # PDF pages with no extractable text, usually scanned images
 
     @property
     def chars(self) -> int:
@@ -76,7 +77,8 @@ def _chunk(text: str) -> list[Page]:
 def _from_pdf(data: bytes, source: str) -> Document:
     reader = PdfReader(io.BytesIO(data))
     pages = [Page(i + 1, (p.extract_text() or "").strip()) for i, p in enumerate(reader.pages)]
-    return Document(source, [p for p in pages if p.text])
+    kept = [p for p in pages if p.text]
+    return Document(source, kept, blank_pages=len(pages) - len(kept))
 
 
 def _from_html(html: str, source: str, base_url: str | None = None) -> Document:
@@ -119,3 +121,21 @@ def load(source: str) -> Document:
     if not doc.pages:
         raise ValueError(f"No text could be extracted from {source}. Scanned PDFs need OCR first.")
     return doc
+
+
+def check_readable(doc: Document, min_chars: int) -> None:
+    """Refuse to review a document whose text did not really come through.
+
+    JavaScript-rendered pages often yield only a cookie banner, and scanned PDFs yield
+    nothing for the image pages. Reviewing what is left would look like a clean contract.
+    """
+    if doc.chars < min_chars:
+        raise ValueError(
+            f"Only {doc.chars} characters of text came out of {doc.source}, which is too little "
+            "to be the whole contract. If it is a web page that needs JavaScript, save it from a "
+            "browser as PDF or HTML and pass the file; if it is a scanned PDF, run OCR first.")
+    total = len(doc.pages) + doc.blank_pages
+    if doc.blank_pages * 4 > total:
+        raise ValueError(
+            f"{doc.blank_pages} of {total} PDF pages in {doc.source} have no extractable text, "
+            "so it is probably scanned. Run OCR first.")

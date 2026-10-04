@@ -22,5 +22,6 @@ MAX_STEPS = int(os.getenv("TRIAGE_MAX_STEPS", "25"))          # agent loop turns
 MAX_FETCHES = int(os.getenv("TRIAGE_MAX_FETCHES", "3"))       # referenced documents per run
 MAX_DOC_CHARS = int(os.getenv("TRIAGE_MAX_DOC_CHARS", "400000"))
 MAX_FETCHED_CHARS = int(os.getenv("TRIAGE_MAX_FETCHED_CHARS", "120000"))
+MIN_DOC_CHARS = int(os.getenv("TRIAGE_MIN_DOC_CHARS", "1000"))   # less means ingestion failed
 MIN_QUOTE_CHARS = 20                                          # shorter quotes prove nothing
 UNVERIFIED_LIMIT = 0.25                                       # above this share, escalate

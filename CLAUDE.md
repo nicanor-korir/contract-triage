@@ -57,4 +57,4 @@ client. They prove the plumbing, not the model's judgement.
 
 Optional settings (see `.env.example` and `config.py`): `TRIAGE_VERIFIER_MODEL`,
 `TRIAGE_PRICE_INPUT_PER_MTOK`, `TRIAGE_PRICE_OUTPUT_PER_MTOK`, `TRIAGE_MAX_STEPS`,
-`TRIAGE_MAX_FETCHES`, `TRIAGE_MAX_DOC_CHARS`.
+`TRIAGE_MAX_FETCHES`, `TRIAGE_MAX_DOC_CHARS`, `TRIAGE_MIN_DOC_CHARS`.
