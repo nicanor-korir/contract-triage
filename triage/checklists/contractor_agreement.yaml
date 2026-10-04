@@ -1,0 +1,109 @@
+# Checklist for independent contractor and consulting agreements, read from the
+# CONTRACTOR's side: the person or small company providing the services.
+# See saas_terms.yaml for the field meanings.
+
+doc_type: contractor_agreement
+title: Independent contractor or consulting agreement
+review_for: the contractor, the person or small company providing the services
+acceptable_jurisdictions: [South Africa, Kenya, England and Wales]  # edit to your own
+
+items:
+  - id: payment_terms
+    title: Payment terms
+    question: How much is the contractor paid, and how soon after invoicing?
+    ok_when: A fixed fee or rate is stated and it is payable within 30 days of a valid invoice.
+    concern_when: Payment takes longer than 30 days, depends on the company's approval or satisfaction, or the company may withhold or set off amounts.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: true
+    keywords: [fee, invoice, payment, remuneration, rate]
+
+  - id: ip_ownership
+    title: Ownership of work and pre-existing IP
+    question: What intellectual property does the contractor hand over, and when?
+    ok_when: Only the deliverables made for the company pass to it, and the contractor keeps its pre-existing tools, code and know-how.
+    concern_when: The contractor assigns all IP, including pre-existing material or work done outside the engagement, or ownership passes before payment.
+    if_concern: lawyer
+    if_missing: negotiate
+    critical: true
+    keywords: [intellectual property, copyright, assign, ownership, invention, work product]
+
+  - id: exclusivity
+    title: Exclusivity during the engagement
+    question: Must the contractor work only for this company while the agreement runs?
+    ok_when: A clause expressly lets the contractor work for other clients. If the contract says nothing about it, record missing.
+    concern_when: The contractor must work exclusively for the company, or needs its consent to take other work.
+    if_concern: negotiate
+    if_missing: ok
+    critical: false
+    keywords: [exclusiv, other clients, sole, solely]
+
+  - id: restraint_of_trade
+    title: Restraint after the engagement ends
+    question: Is the contractor bound by a non-compete, non-solicit or restraint of trade after the agreement ends?
+    ok_when: Any restraint is limited to not soliciting the company's staff or clients for 12 months or less.
+    concern_when: There is a non-compete or restraint of trade after the end, or any restraint lasts more than 12 months or covers a broad area or industry.
+    if_concern: lawyer
+    if_missing: ok
+    critical: true
+    keywords: [restraint, non-compete, noncompete, compete with, solicit, poach]
+
+  - id: termination
+    title: Termination and payment on exit
+    question: Can each side end the agreement, with what notice, and is work done paid for?
+    ok_when: Both parties may end it on notice of 30 days or less, and the contractor is paid for work done up to the end.
+    concern_when: The company may end it without notice while the contractor cannot, the contractor's notice is longer than the company's, or work done is not paid on termination.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: true
+    keywords: [terminat, notice period, cancel]
+
+  - id: liability
+    title: Contractor liability and indemnity
+    question: Is the contractor's liability capped, and does the contractor indemnify the company?
+    ok_when: The contractor's liability is capped at no more than the fees received in the last 12 months, and any indemnity is limited to the contractor's own breach or negligence.
+    concern_when: The contractor's liability is uncapped, or the contractor indemnifies the company broadly, for example against any loss or third party claim.
+    if_concern: lawyer
+    if_missing: ok
+    critical: true
+    keywords: [liab, indemnif, hold harmless, damages]
+
+  - id: confidentiality
+    title: Confidentiality
+    question: What must the contractor keep confidential, and for how long?
+    ok_when: It covers the company's confidential information, with the usual exclusions such as public or already known information.
+    concern_when: It has no exclusions, covers the contractor's own general skills and know-how, or binds the contractor in a way that would stop it working in its field.
+    if_concern: negotiate
+    if_missing: ok
+    critical: false
+    keywords: [confidential, non-disclosure]
+
+  - id: control
+    title: Independence of the contractor
+    question: Does the contractor decide how, when and where the work is done?
+    ok_when: The contractor controls its own methods, hours and place of work, and supplies its own tools.
+    concern_when: The company sets hours, place of work or methods as it would for an employee, while the contractor bears its own tax and has no employee benefits.
+    if_concern: negotiate
+    if_missing: ok
+    critical: false
+    keywords: [working hours, office hours, place of work, supervis, direction, control]
+
+  - id: unilateral_changes
+    title: Changes by the company alone
+    question: Can the company change the scope, fees or terms without the contractor's agreement?
+    ok_when: Changes to scope, fees or terms need the written agreement of both parties.
+    concern_when: The company may change the scope, fees or terms on its own.
+    if_concern: negotiate
+    if_missing: ok
+    critical: false
+    keywords: [amend, vary, variation, modify, change]
+
+  - id: governing_law
+    title: Governing law and disputes
+    question: Which law governs, where must disputes be brought, and is arbitration mandatory?
+    ok_when: Governing law and venue are stated and the venue is in one of the acceptable jurisdictions.
+    concern_when: The venue is outside the acceptable jurisdictions, or the contractor must pay for or travel to a distant arbitration.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [governing law, governed by, jurisdiction, arbitrat, venue]

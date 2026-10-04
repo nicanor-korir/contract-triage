@@ -359,3 +359,25 @@ def test_effort_is_sent_only_when_configured(monkeypatch):
     client = FakeClient({}, doc_type="other")
     triage(SAMPLE_PATH, LLM(client))
     assert client.calls[0]["output_config"] == {"effort": "medium"}
+
+
+# ------------------------------------------------------------- checklists
+
+@pytest.mark.parametrize("doc_type", sorted(agent.available_checklists()))
+def test_every_checklist_item_is_complete(doc_type):
+    from triage.decide import EFFECT
+    items = agent.available_checklists()[doc_type]["items"]
+    assert len({i["id"] for i in items}) == len(items)
+    for item in items:
+        for key in ["id", "title", "question", "ok_when", "concern_when", "keywords"]:
+            assert item.get(key), (item.get("id"), key)
+        assert item["if_concern"] in EFFECT and item["if_missing"] in EFFECT
+        assert isinstance(item["critical"], bool)
+
+
+def test_contractor_checklist_is_read_from_the_contractors_side():
+    checklist = agent.available_checklists()["contractor_agreement"]
+    text = agent._checklist_text(checklist, checklist["items"])
+    assert "Review for: the contractor" in text
+    saas = agent.available_checklists()["saas_terms"]
+    assert "Review for: the customer" in agent._checklist_text(saas, saas["items"])
