@@ -153,7 +153,7 @@ items:
     if_concern: lawyer
     if_missing: ok
     critical: true
-    keywords: [exclusivity, exclusive supplier, exclusive provider, compete, solicit, minimum commitment, minimum purchase]
+    keywords: [exclusivity, exclusive supplier, exclusive provider, non-compete, noncompete, not compete, solicit, minimum commitment, minimum purchase]
 
   - id: governing_law
     title: Governing law and disputes

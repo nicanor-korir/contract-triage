@@ -323,3 +323,19 @@ def test_unsupported_memo_without_a_label_still_renders():
 def test_pdf_reader_warnings_are_silenced():
     import logging
     assert logging.getLogger("pypdf").getEffectiveLevel() >= logging.ERROR
+
+
+def test_second_reader_uses_the_reviewers_status_definitions():
+    client = FakeClient({})
+    f = {"sla": finding("sla", "concern", "makes no commitment regarding availability",
+                        verification="verified")}
+    verify.judge_support(LLM(client), CHECKLIST, f)
+    system = client.calls[0]["system"]
+    assert "does not clearly meet ok_when" in system and "ok is supported only when" in system
+
+
+def test_competent_court_is_not_an_exclusivity_keyword():
+    item = next(i for i in CHECKLIST["items"] if i["id"] == "exclusivity")
+    doc = Document("t", [Page(1, "The courts of competent jurisdiction decide any dispute.")])
+    f = {"exclusivity": finding("exclusivity", "missing")}
+    assert verify.probe_absence({"items": [item]}, f, doc) == {}
