@@ -1,0 +1,107 @@
+# Checklist for data processing agreements, read from the CUSTOMER's side
+# (customer as controller, vendor as processor). See saas_terms.yaml for the field meanings.
+
+doc_type: dpa
+title: Data processing agreement
+acceptable_jurisdictions: [Germany, Ireland, England and Wales, Kenya]  # edit to your own
+
+items:
+  - id: roles
+    title: Controller and processor roles
+    question: Are the roles of the parties stated, with the vendor acting as processor for customer data?
+    ok_when: The customer is controller and the vendor is processor for customer personal data.
+    concern_when: The vendor acts as an independent controller for customer personal data, or the roles are unclear.
+    if_concern: lawyer
+    if_missing: negotiate
+    critical: true
+    keywords: [controller, processor]
+
+  - id: instructions
+    title: Processing only on instructions
+    question: Does the vendor process personal data only on the customer's documented instructions?
+    ok_when: Processing is limited to documented instructions and the purposes of the service.
+    concern_when: The vendor may process personal data for its own purposes.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: true
+    keywords: [instruction, purpose]
+
+  - id: subprocessors
+    title: Subprocessors
+    question: How are subprocessors authorised, and is the customer told about changes with a right to object?
+    ok_when: There is a list of subprocessors, advance notice of changes and a right to object.
+    concern_when: The vendor may add subprocessors without notice, or there is no right to object.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [subprocessor, sub-processor]
+
+  - id: transfers
+    title: International transfers
+    question: What mechanism covers transfers of personal data outside the EEA or the UK?
+    ok_when: A recognised mechanism is named, such as standard contractual clauses or an adequacy decision.
+    concern_when: Data may be transferred with no stated mechanism.
+    if_concern: lawyer
+    if_missing: negotiate
+    critical: true
+    keywords: [transfer, standard contractual clauses, adequacy, third countr]
+
+  - id: security_measures
+    title: Security measures
+    question: Does the vendor commit to specific technical and organisational security measures?
+    ok_when: Measures are described in the DPA or an annex.
+    concern_when: Security is described only as reasonable or commercially reasonable with no detail.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [technical and organi, security measures, encrypt]
+
+  - id: breach_notice
+    title: Personal data breach notice
+    question: How fast must the vendor notify the customer of a personal data breach?
+    ok_when: Without undue delay, or within 72 hours or less.
+    concern_when: There is no deadline, or the deadline is longer than 72 hours.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: true
+    keywords: [breach, security incident, notif]
+
+  - id: audit
+    title: Audit rights
+    question: Can the customer audit the vendor or rely on independent audit reports?
+    ok_when: The customer gets audit reports or certifications, with an audit right where those are not enough.
+    concern_when: There is no audit right and no commitment to share reports.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [audit, inspection, soc 2, iso 27001]
+
+  - id: deletion
+    title: Return and deletion
+    question: Is personal data returned or deleted when the service ends, and by when?
+    ok_when: Data is deleted or returned at the end of the service within a stated period.
+    concern_when: The vendor may keep personal data with no stated limit.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [delet, return]
+
+  - id: data_subject_requests
+    title: Help with data subject requests
+    question: Does the vendor help the customer answer data subject requests?
+    ok_when: The vendor commits to assist with requests and to forward any it receives.
+    concern_when: Assistance is refused, or offered only for undefined extra fees.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [data subject, request]
+
+  - id: dpa_liability
+    title: Liability under the DPA
+    question: Is liability under the DPA limited, and does the main agreement's cap apply to data protection claims?
+    ok_when: Liability follows the main agreement's cap, or data protection claims have a higher cap.
+    concern_when: The vendor excludes liability for data protection breaches.
+    if_concern: lawyer
+    if_missing: ok
+    critical: false
+    keywords: [liability, liable]

@@ -1,0 +1,6 @@
+file,expected_verdict,notes
+# One row per contract. file is a path inside eval/ or an https URL.
+# expected_verdict is sign, negotiate or lawyer, and it is YOUR label, written before the agent runs.
+# Delete these comment rows or leave them, they are skipped.
+# contracts/vendor-a-terms.pdf,negotiate,90 day renewal window and 3 month liability cap
+# contracts/vendor-b-dpa.pdf,sign,

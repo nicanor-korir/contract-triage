@@ -1,0 +1,166 @@
+# Checklist for SaaS terms and master service agreements, read from the CUSTOMER's side.
+#
+# This file is the product. Edit the wording until it matches how you would
+# review a contract yourself, because the agent can only be as good as these questions.
+#
+# if_concern / if_missing: what a bad or absent clause does to the verdict
+#   ok        -> no effect
+#   negotiate -> verdict becomes at least "negotiate"
+#   lawyer    -> verdict becomes "send to a lawyer"
+# critical: if the agent cannot verify its answer on this item, escalate to a lawyer.
+# keywords: used to double check any item the agent reports as missing.
+
+doc_type: saas_terms
+title: SaaS terms or master service agreement
+acceptable_jurisdictions: [Germany, Ireland, England and Wales, Kenya]  # edit to your own
+
+items:
+  - id: liability_cap
+    title: Vendor liability cap
+    question: Is the vendor's total liability capped, and at what amount?
+    ok_when: The cap is at least the fees paid in the previous 12 months and it applies to both parties.
+    concern_when: The cap is below 12 months of fees, the vendor disclaims all liability, or the cap protects only the vendor.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: true
+    keywords: [liability, liable]
+
+  - id: customer_indemnity
+    title: Customer indemnity
+    question: Does the customer indemnify the vendor, and is that obligation limited?
+    ok_when: There is no customer indemnity, or it is limited to the customer's own content or breach.
+    concern_when: The customer indemnity is broad or uncapped, for example covering any use of the service or any third party claim.
+    if_concern: lawyer
+    if_missing: ok
+    critical: true
+    keywords: [indemnif, hold harmless]
+
+  - id: data_ownership
+    title: Ownership of customer data
+    question: Who owns the data the customer puts into the service, and what licence does the vendor take?
+    ok_when: The customer keeps all rights and the vendor's licence is limited to providing the service.
+    concern_when: The vendor claims ownership, or takes a perpetual or irrevocable licence that goes beyond providing the service.
+    if_concern: lawyer
+    if_missing: negotiate
+    critical: true
+    keywords: [customer data, your content, customer content, ownership, licen]
+
+  - id: data_training
+    title: Use of customer data for training
+    question: May the vendor use customer data to train models or to improve its products?
+    ok_when: It is prohibited, or allowed only with the customer's opt in.
+    concern_when: It is allowed by default, including where the customer has to opt out.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [train, machine learning, improve, aggregated, de-identified]
+
+  - id: dpa
+    title: Data processing agreement
+    question: Does the agreement include or incorporate a data processing agreement for personal data?
+    ok_when: A DPA is incorporated by reference or attached.
+    concern_when: Personal data is processed but a DPA is available only on request or on terms the vendor can change freely.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [data processing, dpa, personal data, gdpr]
+
+  - id: breach_notice
+    title: Security incident notice
+    question: Must the vendor notify the customer of a security incident, and how fast?
+    ok_when: Notice is required within 72 hours or without undue delay.
+    concern_when: Notice is required but with no deadline, or with a deadline longer than 72 hours.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [breach, security incident, notif]
+
+  - id: data_exit
+    title: Data export and deletion
+    question: Can the customer export its data, and is the data deleted after termination?
+    ok_when: There is an export window after termination and a commitment to delete.
+    concern_when: There is no export right, or the vendor may keep the data indefinitely.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [export, delet, retriev, return of]
+
+  - id: termination
+    title: Customer termination rights
+    question: Can the customer terminate, for convenience or for breach, and with what notice?
+    ok_when: The customer may terminate for convenience, or for an uncured material breach with a cure period of 30 days or less.
+    concern_when: The customer has no termination right, or the vendor may terminate at will while the customer cannot.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: true
+    keywords: [terminat]
+
+  - id: auto_renewal
+    title: Automatic renewal
+    question: Does the term renew automatically, and what is the notice window to cancel?
+    ok_when: There is no automatic renewal, or the cancellation notice window is 30 days or less.
+    concern_when: It renews automatically with a notice window longer than 30 days, or for a renewal term longer than 12 months.
+    if_concern: negotiate
+    if_missing: ok
+    critical: false
+    keywords: [renew]
+
+  - id: price_changes
+    title: Price changes
+    question: Can the vendor raise prices during the term or at renewal without the customer's consent?
+    ok_when: Prices are fixed during the term and can rise only at renewal with at least 30 days of notice.
+    concern_when: The vendor can change prices at any time, or renewal increases are uncapped and without notice.
+    if_concern: negotiate
+    if_missing: ok
+    critical: false
+    keywords: [price, pricing, fees, increase]
+
+  - id: unilateral_changes
+    title: Changes to the terms
+    question: Can the vendor change the agreement on its own?
+    ok_when: Changes need agreement, or material changes come with notice and a right to terminate.
+    concern_when: The vendor can change terms at any time by posting them, with continued use counting as acceptance.
+    if_concern: negotiate
+    if_missing: ok
+    critical: false
+    keywords: [modify, amend, update these terms, change these terms, revise]
+
+  - id: sla
+    title: Uptime commitment
+    question: Is there an uptime commitment with a remedy when it is missed?
+    ok_when: There is a service level with credits or a termination right.
+    concern_when: The service is provided as is, with availability expressly not guaranteed.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [uptime, availability, service level, sla, service credit]
+
+  - id: ip_assignment
+    title: Customer IP
+    question: Does anything assign the customer's intellectual property to the vendor, beyond a licence to feedback?
+    ok_when: The vendor takes at most a licence to feedback and suggestions.
+    concern_when: The customer assigns IP or work product, or grants a broad licence to its own materials.
+    if_concern: lawyer
+    if_missing: ok
+    critical: true
+    keywords: [assign, intellectual property, feedback, work product]
+
+  - id: exclusivity
+    title: Exclusivity and commitments
+    question: Is the customer bound by exclusivity, a non-compete, a non-solicit or a minimum purchase commitment?
+    ok_when: None of these apply to the customer.
+    concern_when: Any of these apply to the customer.
+    if_concern: lawyer
+    if_missing: ok
+    critical: true
+    keywords: [exclusivity, exclusive supplier, exclusive provider, compete, solicit, minimum commitment, minimum purchase]
+
+  - id: governing_law
+    title: Governing law and disputes
+    question: Which law governs, where must disputes be brought, and is arbitration mandatory?
+    ok_when: Governing law and venue are stated and the venue is in one of the acceptable jurisdictions.
+    concern_when: The venue is outside the acceptable jurisdictions, or binding arbitration is mandatory.
+    if_concern: negotiate
+    if_missing: negotiate
+    critical: false
+    keywords: [governing law, governed by, jurisdiction, arbitrat, venue]

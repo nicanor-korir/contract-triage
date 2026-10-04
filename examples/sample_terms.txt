@@ -1,0 +1,71 @@
+NIMBUSDESK TERMS OF SERVICE
+
+This is a fictional agreement written for testing the contract triage agent. It is not based on any real company's terms.
+
+1. The Agreement
+
+These Terms of Service form a binding agreement between Nimbusdesk Ltd ("Nimbusdesk", "we") and the organisation that creates an account ("Customer", "you"). By creating an account you accept these Terms on behalf of your organisation.
+
+2. The Service
+
+Nimbusdesk provides a hosted help desk application. We will make the Service available to you during the Subscription Term set out in your Order Form.
+
+3. Customer Data
+
+3.1 Ownership. As between the parties, Customer owns all Customer Data. Customer grants Nimbusdesk a non-exclusive licence to host, copy and process Customer Data only as needed to provide the Service.
+
+3.2 Service improvement. Nimbusdesk may use Customer Data, including the content of support tickets, to develop, train and improve its products and machine learning models unless Customer opts out by written notice.
+
+3.3 Data processing. Where Nimbusdesk processes personal data on your behalf, the Data Processing Addendum at https://nimbusdesk.example/legal/dpa applies and is incorporated into these Terms.
+
+4. Security
+
+4.1 Nimbusdesk maintains administrative, physical and technical safeguards designed to protect Customer Data.
+
+4.2 If Nimbusdesk becomes aware of a security incident affecting Customer Data, it will notify Customer within ten business days of confirming the incident.
+
+5. Fees
+
+5.1 Fees are set out in the Order Form and are payable annually in advance.
+
+5.2 Nimbusdesk may increase the fees for any renewal term by giving at least thirty days of written notice before the renewal date.
+
+6. Term and Renewal
+
+6.1 The Subscription Term starts on the date in the Order Form and continues for twelve months.
+
+6.2 The Subscription Term renews automatically for successive twelve month periods unless either party gives written notice of non-renewal at least ninety days before the end of the current term.
+
+7. Termination
+
+7.1 Either party may terminate this agreement if the other party materially breaches it and does not cure the breach within thirty days of written notice.
+
+7.2 After termination, Customer may export Customer Data for thirty days, after which Nimbusdesk will delete Customer Data from its production systems within ninety days.
+
+8. Changes to these Terms
+
+Nimbusdesk may modify these Terms at any time by posting a revised version on its website. Your continued use of the Service after the revised version is posted constitutes acceptance of the changes.
+
+9. Warranties and Availability
+
+The Service is provided "as is". Nimbusdesk does not warrant that the Service will be uninterrupted or error free and makes no commitment regarding availability.
+
+10. Feedback
+
+If you give us suggestions about the Service, you grant Nimbusdesk a perpetual licence to use that feedback without restriction. Nothing in these Terms transfers ownership of Customer's intellectual property to Nimbusdesk.
+
+11. Indemnity
+
+Customer will indemnify Nimbusdesk against third party claims arising from Customer Data that infringes the rights of others or violates applicable law.
+
+12. Limitation of Liability
+
+Each party's total liability arising out of this agreement is limited to the fees paid by Customer in the three months before the event giving rise to the claim. Neither party is liable for indirect or consequential damages.
+
+13. Governing Law
+
+This agreement is governed by the laws of Ireland, and the courts of Dublin have exclusive jurisdiction over any dispute arising from it.
+
+14. General
+
+Neither party may assign this agreement without the other party's written consent, except to a successor in a merger or sale of substantially all of its assets. This agreement is the entire agreement between the parties about the Service.

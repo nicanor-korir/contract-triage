@@ -1,0 +1,8 @@
+__pycache__/
+.pytest_cache/
+.env
+runs/*
+!runs/.gitkeep
+eval/contracts/*
+!eval/contracts/.gitkeep
+eval/results/
